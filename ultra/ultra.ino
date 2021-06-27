@@ -5,7 +5,13 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  Serial.println(ultra(4,3));
+  Serial.print(ultra(34,36));//0
+  Serial.print(" ");
+  Serial.print(ultra(30,32));//1
+  Serial.print(" ");
+  Serial.print(ultra(38,40));//2
+  Serial.print(" ");
+  Serial.println(ultra(26,28));//3
   delay(500);
 }
 

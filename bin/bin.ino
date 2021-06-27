@@ -100,10 +100,10 @@ void working_in(String data){//control all motor
   }
 
   String output = "{";
-  output += "'ultra0':" + String(ultra(38, 40)) + ",";//bin 0 : trig 22, echo 24
-  output += "'ultra1':" + String(ultra(26, 28)) + ",";//bin 1 : trig 26, echo 28
-  output += "'ultra2':" + String(ultra(30, 32)) + ",";//bin 2 : trig 30, echo 32
-  output += "'ultra3':" + String(ultra(34, 36)) + "}";//bin 3 : trig 34, echo 36
+  output += "'bin0':" + String(ultra(34, 36)) + ",";//bin 0 : trig 38, echo 40
+  output += "'bin1':" + String(ultra(30, 32)) + ",";//bin 1 : trig 26, echo 28
+  output += "'bin2':" + String(ultra(38, 40)) + ",";//bin 2 : trig 30, echo 32
+  output += "'bin3':" + String(ultra(26, 28)) + "}";//bin 3 : trig 34, echo 36
   Serial.println(output);
 }
 
