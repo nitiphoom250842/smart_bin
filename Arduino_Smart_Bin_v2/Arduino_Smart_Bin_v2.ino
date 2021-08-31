@@ -1,4 +1,3 @@
-
 #include <Ultrasonic.h>
 
 Ultrasonic Ultrasonic1(38,40); // (Trig PIN,Echo PIN)
@@ -19,35 +18,23 @@ Ultrasonic Ultrasonic4(34,36); // (Trig PIN,Echo PIN)
 #define PWM 7
 
 #define SWITCH 8//Metal detect sensor
+#define SWITCH_R 9//Metal detect sensor
+#define SWITCH_L 10//Metal detect sensor
 
 int last = 0;//last state of Control motor
 
 void move_motor(int data){//control motor
     digitalWrite(MOTOR, (data == 0 || (data == 2 && last == 1))?HIGH:LOW);
 
-    analogWrite(PWM,(data == 2)?90:((data == 0)?140:175
-    ));
+    analogWrite(PWM,(data == 2)?90:((data == 0)?140:175));
     delay(200);
-    while(digitalRead(SWITCH) == 0);
+    while(digitalRead(SWITCH) == 0 || digitalRead(SWITCH_L) == 0 || digitalRead(SWITCH_R) == 0);
     analogWrite(PWM,(data == 2)?30:130);
     delay(200);
     analogWrite(PWM,0);
 
     last = data;
 }
-/*
-void move_motor(int data){//control motor
-    digitalWrite(MOTOR, (data == 0 || (data == 2 && last == 1))?HIGH:LOW);
-
-    analogWrite(PWM,(data == 2)?90:161);
-    delay(200);
-    while(digitalRead(SWITCH) == 0);
-    analogWrite(PWM,(data == 2)?30:120);
-    delay(200);
-    analogWrite(PWM,0);
-
-    last = data;
-}*/
 
 void steps(int dpin, //direction pin
            int spin, //step pin
@@ -169,7 +156,7 @@ void setup() {
 void loop() {
   if (Serial.available() > 0) {
     String data = Serial.readStringUntil('\n');
-    //working_in(data);
+    working_in(data);
 
     String output = "{";
     output += "'ultra0':" + String(Ultrasonic1.Ranging(CM)) + ",";//bin 0 : trig 22, echo 24
