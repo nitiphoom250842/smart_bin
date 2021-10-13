@@ -13,6 +13,7 @@
 #define prox_center_switch 8//Metal detect sensor
 #define prox_left_switch 10//Metal detect sensor
 #define prox_right_switch 9//Metal detect sensor
+#define prox_release_switch 44
 
 String key = "-1" ;
 int last_state = 3;//last state of Control motor
@@ -40,6 +41,7 @@ void steps(int dpin, //direction pin
     delayMicroseconds(delaytime); 
     digitalWrite(spin, LOW); 
     delayMicroseconds(delaytime); 
+    //Serial.println(i);
   }
 } 
 
@@ -60,7 +62,15 @@ void release(){//1.73 s
   steps(DIR_PIN2,STEP_PIN2,step,time);
   delay(250);
   steps(DIR_PIN2,STEP_PIN2,-1*step,time);
-
+  if(digitalRead(prox_release_switch) == 0){
+    digitalWrite(DIR_PIN2,HIGH); 
+    while(digitalRead(prox_release_switch) == 0){
+      digitalWrite(STEP_PIN2, HIGH); 
+      delayMicroseconds(time); 
+      digitalWrite(STEP_PIN2, LOW); 
+      delayMicroseconds(time); 
+    }
+  }
   step = 250, 
   time = 700;
   steps(DIR_PIN1,STEP_PIN1,-1*step,time);
@@ -115,6 +125,7 @@ void setup() {
   pinMode(MOTOR,OUTPUT);
   pinMode(PWM,OUTPUT);
 
+  pinMode(prox_release_switch,INPUT);
   pinMode(prox_center_switch,INPUT);
   pinMode(prox_left_switch,INPUT);
   pinMode(prox_right_switch,INPUT);
@@ -128,7 +139,7 @@ void loop() {
     key = Serial.readStringUntil('\n');
   
     if(key == "0"){//bin#1 -can
-      motor_control(150,cw);
+      motor_control(140,cw);
       while(digitalRead(prox_left_switch) == 0){delay(1);}
       motor_control(0,cw);
       push();
@@ -136,7 +147,7 @@ void loop() {
     }
     
     if(key == "1"){//bin#2 -pete
-      motor_control(150,cw);
+      motor_control(140,cw);
       while(digitalRead(prox_left_switch) == 0){delay(1);}
       motor_control(0,cw);
       release();
